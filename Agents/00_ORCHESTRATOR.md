@@ -138,6 +138,9 @@ Regeln:
    - Bei Alias: NAME = Teil vor '|'
    - Sonst: NAME = vollständiger Inhalt
 
+2a. Falls es sich nicht um Obsidian Links handelt, sondern um normale Dateinamen (bspw. CHAR_LauraAhler.md)
+  - ist der Dateiname direkt der vollständige Inhalt.
+   
 3. Bestimme Prefix = Zeichenkette vor erstem "_"
 
 4. Verwende die PREFIX_MAP zur Ordnerauflösung:
