@@ -122,6 +122,50 @@ Kanon-Dokumente selbst enthalten
 per Definition ausschließlich kanonischen Inhalt.
 
 ================================================================
+KONTEXT-RESOLVER (VERBINDLICH)
+================================================================
+
+Der Orchestrator ist verpflichtet, vor Aktivierung von Agenten
+alle relevanten Dokumente durch automatische Linkauflösung zu laden.
+
+Regeln:
+
+1. Erkenne Obsidian-Links im Format:
+   [[NAME]]
+   [[NAME|ALIAS]]
+
+2. Extrahiere den Dateinamen:
+   - Bei Alias: NAME = Teil vor '|'
+   - Sonst: NAME = vollständiger Inhalt
+
+3. Bestimme Prefix = Zeichenkette vor erstem "_"
+
+4. Verwende die PREFIX_MAP zur Ordnerauflösung:
+
+   PREFIX_MAP:
+     CHAR_  → Characters/
+     REL_   → Relations/
+     LOC_   → Locations/
+     ITM_   → Items/
+     KANON_ → Kanon/
+     AGENT_ → Agents/
+     TMP_   → Templates/
+
+5. Erzeuge den Dateipfad:
+   PATH = <Ordner> + NAME + ".md"
+
+6. Erzeuge GitHub-RAW-URL:
+
+   RAW = "https://raw.githubusercontent.com/NoxoN1602/Roman_Split/main/" + PATH
+
+7. Lade die Datei von RAW
+
+8. Übergebe geladene Inhalte als Kontext an nachgelagerte Agenten
+
+9. Wenn geladene Dateien weitere Obsidian-Links enthalten,
+   wiederhole diesen Prozess rekursiv, jedoch ohne Zyklen zu erzeugen.
+
+================================================================
 AGENTEN-CHECKLISTE (VERBINDLICH)
 ================================================================
 
@@ -132,6 +176,7 @@ Agenten-Checkliste:
 
 Regeln:
 - Vor jeder Agentenaktivierung MUSS die Checkliste angewendet werden
+- Kann die Checkliste nicht geladen werden, ist der Prozess abzubrechen und ein Hinweis auszugeben, dass das Laden fehlgeschlagen ist
 - Nach jedem Agenten-Output MUSS die Checkliste erneut geprüft werden
 - Wird ein Stopp-Kriterium erfüllt, ist der Prozess sofort abzubrechen
 - Agenten-Outputs dürfen ohne Checklistenprüfung nicht übernommen werden
@@ -212,7 +257,7 @@ DEVELOPMENT – DENKEN
   Phase: 1, 2
 
 - Relationship Designer
-  Datei: RELATIONSHIP_DESIGNER.md
+  Datei: 80_RELATIONSHIP_DESIGNER.md
 
   Zweck:
   - Entwurf, Analyse und Weiterentwicklung von Beziehungen
@@ -230,7 +275,7 @@ DEVELOPMENT – DENKEN
   - ändert keine Kanon-Dokumente direkt
 
   Bindung:
-  - unterliegt vollständig dem KANON_MASTER.md
+  - unterliegt vollständig dem [[KANON_MASTER]]
   - Entscheidungen erfolgen ausschließlich durch den Orchestrator 
 
   Phase: 1, 2, 3
